@@ -10,7 +10,7 @@ data class FlowEventStreamConfig(
     override val configs: Map<String, FlowStreamConfig>
 ) : EventStreamConfig {
     companion object {
-        val default = FlowEventStreamConfig(
+        val default: FlowEventStreamConfig = FlowEventStreamConfig(
             mapOfEventNameToSubclass.entries.associateBy({ it.key }, { FlowStreamConfig() })
         )
     }

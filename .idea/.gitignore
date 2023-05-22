@@ -1,0 +1,54 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+
+# built application files
+*.apk
+*.ap_
+
+# files for the dex VM
+*.dex
+
+# Java class files
+*.class
+
+# generated files
+bin/
+gen/
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Eclipse project files
+.classpath
+.project
+
+# Android Studio
+**/.idea/*
+!.idea/inspectionProfiles
+.idea/inspectionProfiles/*
+!.idea/inspectionProfiles/Teams_Android.xml
+!.idea/inspectionProfiles/profiles_settings.xml
+# New run configurations (such as custom tests) are stored here
+.run/
+.gradle
+.DS_Store
+/captures
+/*/local.properties
+/*/out
+/*/*/build
+/*/*/production
+*.iml
+*.iws
+*.ipr
+*~
+
+# Other files
+ivy.dependency.report
+
+/symbols/
+
+# Ignore checkstyle, findbugs, pmd reports
+/checkstyle
+/pmd
+/findbugs
+lint-report.html

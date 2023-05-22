@@ -16,15 +16,18 @@ import com.microsoft.chronos.Executors
 import com.microsoft.chronos.api.*
 import com.microsoft.chronos.experiments.CustomExperiment
 import com.microsoft.chronos.stream.FlowEventStream
+import com.microsoft.chronos.stream.FlowEventStreamConfig
 import com.microsoft.chronossample.databinding.ActivityMain2Binding
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.asCoroutineDispatcher
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMain2Binding
-    private lateinit var executor: IExecutors
-    private lateinit var eventStream: EventStream
+    private lateinit var executors: IExecutors
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,12 +46,14 @@ class MainActivity : AppCompatActivity() {
                 .setAction("Action", null).show()
         }
 
-        executor = Executors(
-            eventStream = getEventStream(ExecutorEventsConfig()),
-            config = getExecutorConfig( null)      //No Experiment
+        executors = Executors(
+            eventStream = getEventStream(),
+            config = getExecutorConfig( "[{\"executorId\":\"USER_INITIATED\",\"corePoolSize\":24]")      //Json Powered Experiment
         )
-        executor.getExecutor(ExecutorName.BACKGROUND).execute {
-            Thread.sleep(1000)
+        CoroutineScope(
+            executors.getExecutor(ExecutorName.USER_INITIATED).asCoroutineDispatcher()
+        ).launch {
+            // someCriticalWork()
         }
     }
 
@@ -58,15 +63,8 @@ class MainActivity : AppCompatActivity() {
                 || super.onSupportNavigateUp()
     }
 
-    private fun getEventStream(
-        config: ExecutorEventsConfig
-    ): EventStream {
-        return FlowEventStream(
-            ExecutorEventsConfig.toFlowEventStreamConfig(
-                config,
-                GlobalScope
-            )
-        ).apply {
+    private fun getEventStream(): EventStream {
+        return FlowEventStream(FlowEventStreamConfig.default).apply {
             registerTransformer(object : EventTransformer<MeasureEvent> {
                 override fun transform(event: MeasureEvent): MeasureEvent? {
                     TODO("Not yet implemented")
