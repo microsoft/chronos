@@ -1,6 +1,6 @@
 # Chronos
 
-> Experiment & govern your threading layer with an iron-fist
+> Measure, experiment with & govern your threading layer with an iron-fist
 
 Chronos (named after Greek god of time) is a thread orchestration, experimentation, monitoring and governance library for Android applications that work for large scale mobile apps. It enables a teams of developers on multiple features to utilise threading in a safe and controllable way.
 - Addresses the thread explosion problem for large teams with a centralised threadpool management system.
@@ -11,7 +11,7 @@ Chronos (named after Greek god of time) is a thread orchestration, experimentati
 
 
 ## Usage
-1. Create a BaseExecutorConfig for threadpools that would contain all the threadpools. Centralising this will ensure governance of background work is possible. Each Executor is represented by an ExecutorSetting and the name should be passed to the get() APIs to ensure this is used.
+**1.** Create a BaseExecutorConfig for threadpools that would contain all the threadpools. Centralising this will ensure governance of background work is possible. Each Executor is represented by an ExecutorSetting and the name should be passed to the get() APIs to ensure this is used.
 Please check ExecutorSettings for possible values and their defaults.
 
 For eg, you can follow a [GCD](https://developer.apple.com/documentation/dispatch/dispatchqos) based threadpool approach for creating your threadling layer to run work on based on it's priority to the user like in iOS.
@@ -48,8 +48,7 @@ object BaseExecutorConfig : ExecutorConfig {
 }
 ```
 
-2. Initialise an EventStream and register collectors to collect ExecutorEvent and ExecutionEvents from these threadpools. The EventStreamConfig will decide the monitoring related
-settings we will be using for these events. For eg, we can decide to collect events only when the app is in debug mode or with apply backpressure to the collectors. Transformers can be applied to add more metadata to certain events or filter some out. 
+**2.** Initialise an EventStream and register collectors to collect ExecutorEvent and ExecutionEvents from these threadpools. The EventStreamConfig will decide the monitoring related settings we will be using for these events. For eg, we can decide to collect events only when the app is in debug mode or with apply backpressure to the collectors. Transformers can be applied to add more metadata to certain events or filter some out. 
 
 All events collected pass through all the transformers to the collectors.
 
@@ -70,28 +69,27 @@ All events collected pass through all the transformers to the collectors.
         )
     }
 }
-
 ```
 
-3. Initialise Executors class with EventStream and BaseExecutorConfig. Please check Experiments section to see how this BaseExecutorConfig can also be modified at runtime.
+**3.** Initialise Executors class with EventStream and BaseExecutorConfig. Please check Experiments section to see how this BaseExecutorConfig can also be modified at runtime.
 
 ```kotlin
     private val executors = Executors(
         getExecutorConfig(args),
         getExecutorEventsConfig(args)
     )
-
 ```
 
 
-4.1. Use Executors class at all places to post work as coroutines in Kotlin
+**4.** Use Executors class at all places to post work as coroutines in Kotlin
 ```kotlin
     CoroutineScope(executors.getExecutor(ExecutorName.USER_INITIATED).asCoroutineDispatcher()).launch {
         someCriticalWork()
     }
 ```
 
-4.2. Or Runnables in Java
+or runnables in Java
+
 ```java
     executors
         .getExecutor(ExecutorName.USER_INITIATED)
