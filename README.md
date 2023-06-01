@@ -14,7 +14,7 @@ Chronos (named after Greek god of time) is a thread orchestration, experimentati
 1. Create a BaseExecutorConfig for threadpools that would contain all the threadpools. Centralising this will ensure governance of background work is possible. Each Executor is represented by an ExecutorSetting and the name should be passed to the get() APIs to ensure this is used.
 Please check ExecutorSettings for possible values and their defaults.
 
-For eg, you can follow a GCD based threadpool approach for creating your threadling layer to run work on based on it's priority to the user like in iOS.
+For eg, you can follow a [GCD](https://developer.apple.com/documentation/dispatch/dispatchqos) based threadpool approach for creating your threadling layer to run work on based on it's priority to the user like in iOS.
 
 ```kotlin
 object BaseExecutorConfig : ExecutorConfig {
